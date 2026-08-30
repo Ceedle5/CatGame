@@ -147,58 +147,138 @@
   .fill-energy{background:linear-gradient(90deg,#a2c2ea,#6f95cf);}
   .stat-num{font-size:0.78rem;font-weight:800;color:var(--ink-soft);min-width:20px;text-align:right;}
 
-  /* ---------- Doors ---------- */
+  /* ---------- Doors: portal nodes ---------- */
   .room-door{
     position:absolute;
     top:50%;
     transform:translateY(-50%);
-    width:56px;
-    height:200px;
+    width:74px;
+    height:74px;
     border:none;
     padding:0;
     cursor:pointer;
-    background:linear-gradient(160deg, var(--accent), var(--accent-deep));
-    border-radius:26px 26px 6px 6px;
-    box-shadow:0 12px 24px var(--shadow), inset 0 0 0 3px rgba(255,255,255,0.35);
+    background:transparent;
     z-index:12;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:flex-end;
-    gap:6px;
-    padding-bottom:14px;
-    transition:transform 0.2s ease, filter 0.15s ease, background 0.5s ease, box-shadow 0.2s ease;
-    overflow:visible;
-  }
-  .room-door:hover{transform:translateY(-56%) scale(1.04);filter:brightness(1.08);box-shadow:0 16px 30px var(--shadow), 0 0 0 6px rgba(255,255,255,0.18), inset 0 0 0 3px rgba(255,255,255,0.4);}
-  .room-door:active{transform:translateY(-52%) scale(0.99);}
-  .room-door.prev{left:22px;}
-  .room-door.next{right:22px;}
-  .door-window{
-    position:absolute;
-    top:22px;left:50%;
-    transform:translateX(-50%);
-    width:22px;height:22px;
-    border-radius:50%;
-    background:rgba(234,246,255,0.8);
-    box-shadow:inset 0 0 0 2px rgba(255,255,255,0.75);
-  }
-  .door-arrow{
     display:flex;
     align-items:center;
     justify-content:center;
-    line-height:1;
+    transition:transform 0.3s cubic-bezier(.2,1,.3,1);
+    overflow:visible;
   }
-  .door-arrow svg{width:20px;height:20px;stroke:#fff;}
-  .door-label{
+  .room-door.prev{left:24px;}
+  .room-door.next{right:24px;}
+  .room-door:hover{transform:translateY(-56%) scale(1.07);}
+  .room-door:active{transform:translateY(-52%) scale(0.93);}
+
+  /* rotating neon ring */
+  .door-ring{
+    position:absolute;
+    inset:-6px;
+    border-radius:50%;
+    background:conic-gradient(from 0deg, var(--accent), var(--gold), var(--coral), var(--accent));
+    filter:blur(5px);
+    opacity:0.5;
+    animation:doorSpin 6s linear infinite;
+    transition:opacity 0.25s ease, filter 0.25s ease;
+    pointer-events:none;
+  }
+  @keyframes doorSpin{ to{ transform:rotate(360deg); } }
+  .room-door:hover .door-ring{opacity:1;filter:blur(8px);}
+
+  /* glass core with the destination icon */
+  .door-core{
+    position:relative;
+    width:100%;height:100%;
+    border-radius:50%;
+    background:radial-gradient(circle at 32% 26%, rgba(255,255,255,0.95), var(--paper-glass-strong) 68%);
+    backdrop-filter:blur(14px) saturate(1.4);
+    -webkit-backdrop-filter:blur(14px) saturate(1.4);
+    box-shadow:0 10px 26px var(--shadow), inset 0 0 0 2px rgba(255,255,255,0.6);
+    display:flex;align-items:center;justify-content:center;
+    animation:doorPulse 3.4s ease-in-out infinite;
+    transition:box-shadow 0.25s ease;
+  }
+  @keyframes doorPulse{
+    0%,100%{box-shadow:0 10px 26px var(--shadow), inset 0 0 0 2px rgba(255,255,255,0.6), 0 0 0 0 rgba(255,255,255,0);}
+    50%{box-shadow:0 10px 26px var(--shadow), inset 0 0 0 2px rgba(255,255,255,0.6), 0 0 16px 2px var(--accent);}
+  }
+  .room-door:hover .door-core{box-shadow:0 14px 30px var(--shadow), inset 0 0 0 2px rgba(255,255,255,0.85), 0 0 0 6px rgba(255,255,255,0.16);}
+
+  .door-face-icon{display:flex;align-items:center;justify-content:center;}
+  .door-face-icon svg{width:28px;height:28px;stroke:var(--accent-deep);fill:none;}
+  .door-face-icon svg.filled{fill:var(--accent-deep);stroke:none;}
+
+  /* directional chevron badge */
+  .door-chevron{
+    position:absolute;
+    bottom:-2px;
+    width:26px;height:26px;
+    border-radius:50%;
+    background:linear-gradient(160deg, var(--accent), var(--accent-deep));
+    box-shadow:0 4px 10px var(--shadow), 0 0 0 3px var(--paper);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .door-chevron svg{width:13px;height:13px;stroke:#fff;stroke-width:3;}
+  .door-chevron-prev{left:-6px;}
+  .door-chevron-next{right:-6px;}
+
+  /* floating HUD label tag */
+  .door-tag{
+    position:absolute;
+    top:-42px;left:50%;
+    transform:translate(-50%,6px);
+    padding:6px 14px 6px 18px;
+    background:rgba(47,42,61,0.92);
+    color:#fff;
     font-family:'Nunito',sans-serif;
     font-weight:800;
-    font-size:0.68rem;
+    font-size:0.66rem;
     text-transform:uppercase;
-    letter-spacing:0.04em;
-    color:rgba(255,255,255,0.92);
-    text-align:center;
-    max-width:70px;
+    letter-spacing:0.05em;
+    white-space:nowrap;
+    clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.18s ease, transform 0.18s ease;
+  }
+  .door-tag::after{
+    content:"";
+    position:absolute;bottom:-5px;left:50%;
+    transform:translateX(-50%);
+    width:0;height:0;
+    border-left:5px solid transparent;
+    border-right:5px solid transparent;
+    border-top:5px solid rgba(47,42,61,0.92);
+  }
+  .room-door:hover .door-tag{opacity:1;transform:translate(-50%,0);}
+
+  /* level-select rail: quick jump between rooms, game world-map style */
+  .room-rail{
+    position:absolute;
+    left:50%;bottom:18px;
+    transform:translateX(-50%);
+    z-index:14;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 15px;
+    border-radius:999px;
+  }
+  .rail-dot{
+    width:9px;height:9px;
+    border-radius:50%;
+    border:none;
+    padding:0;
+    cursor:pointer;
+    background:rgba(58,50,48,0.22);
+    transition:width 0.25s cubic-bezier(.2,1,.3,1), border-radius 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  }
+  .rail-dot:hover{background:rgba(58,50,48,0.4);}
+  .rail-dot.active{
+    width:24px;
+    border-radius:6px;
+    background:linear-gradient(90deg, var(--accent), var(--accent-deep));
+    box-shadow:0 0 0 3px rgba(255,255,255,0.55), 0 0 10px var(--accent);
   }
 
   /* room props */
@@ -816,20 +896,50 @@
   }
 
   .room-door{
-    width:46px;
-    height:150px;
+    width:54px;
+    height:54px;
   }
 
   .room-door.prev{
-    left:10px;
+    left:12px;
   }
 
   .room-door.next{
-    right:10px;
+    right:12px;
   }
 
-  .door-label{
+  .door-face-icon svg{
+    width:21px;
+    height:21px;
+  }
+
+  .door-chevron{
+    width:20px;
+    height:20px;
+  }
+
+  .door-chevron svg{
+    width:10px;
+    height:10px;
+  }
+
+  .door-tag{
     display:none;
+  }
+
+  .room-rail{
+    bottom:12px;
+    gap:7px;
+    padding:7px 12px;
+  }
+
+  .rail-dot{
+    width:7px;
+    height:7px;
+  }
+
+  .rail-dot.active{
+    width:18px;
   }
 
   .cat-stage{
@@ -926,15 +1036,19 @@
     <div class="prop bed" id="prop-bed"></div>
 
     <button class="room-door prev" id="prevRoom" aria-label="Previous room">
-      <span class="door-window"></span>
-      <span class="door-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></span>
-      <span class="door-label" id="prevLabel">Bedroom</span>
+      <span class="door-ring"></span>
+      <span class="door-core"><span class="door-face-icon" id="prevIcon"></span></span>
+      <span class="door-chevron door-chevron-prev"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></span>
+      <span class="door-tag" id="prevLabel">Bedroom</span>
     </button>
     <button class="room-door next" id="nextRoom" aria-label="Next room">
-      <span class="door-window"></span>
-      <span class="door-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
-      <span class="door-label" id="nextLabel">Kitchen</span>
+      <span class="door-ring"></span>
+      <span class="door-core"><span class="door-face-icon" id="nextIcon"></span></span>
+      <span class="door-chevron door-chevron-next"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+      <span class="door-tag" id="nextLabel">Kitchen</span>
     </button>
+
+    <div class="room-rail glass" id="roomRail"></div>
 
     <div class="cat-stage">
       <div class="mood-halo"></div>
@@ -943,7 +1057,7 @@
         <img class="cat-pose-img cat-img" src="/Assets/Character.png" alt="Whiskers the cat">
         <img class="cat-pose-img cat-img-sleep" src="/Assets/Sleeping.png" alt="Whiskers sleeping">
         <img class="cat-pose-img cat-img-hungry" src="/Assets/Hungry.png" alt="Whiskers is hungry">
-        <img class="cat-pose-img cat-img-eating" src="Assets/Eating.png" alt="Whiskers eating">
+        <img class="cat-pose-img cat-img-eating" src="/Assets/Eating.png" alt="Whiskers eating">
         <img class="cat-pose-img cat-pet-frame" id="petFrame1" src="/Assets/Pet.png" alt="Whiskers noticing pets">
         <img class="cat-pose-img cat-pet-frame" id="petFrame2" src="/Assets/pet1.png" alt="Whiskers enjoying pets">
         <img class="cat-pose-img cat-pet-frame" id="petFrame3" src="/Assets/Pet3.png" alt="Whiskers rolling over happily">
@@ -1027,11 +1141,20 @@
     name: 'Whiskers'
   };
 
+  const ROOM_ICON = {
+    living: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v6h16v-6"/><path d="M4 12a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2"/><path d="M6 10V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>',
+    kitchen: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M9.5 10V6.5a2.5 2.5 0 0 1 5 0V10"/></svg>',
+    bedroom: '<svg viewBox="0 0 24 24" class="filled"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z"/></svg>',
+  };
+
   const els = {
     stage: document.getElementById('stage'),
     roomName: document.getElementById('roomName'),
     prevLabel: document.getElementById('prevLabel'),
     nextLabel: document.getElementById('nextLabel'),
+    prevIcon: document.getElementById('prevIcon'),
+    nextIcon: document.getElementById('nextIcon'),
+    roomRail: document.getElementById('roomRail'),
     catWrap: document.getElementById('catWrap'),
     bubble: document.getElementById('bubble'),
     particles: document.getElementById('particles'),
@@ -1110,12 +1233,29 @@
     const nextRoom = rooms[(roomIndex + 1) % rooms.length];
     els.prevLabel.textContent = roomLabels[prevRoom];
     els.nextLabel.textContent = roomLabels[nextRoom];
+    els.prevIcon.innerHTML = ROOM_ICON[prevRoom];
+    els.nextIcon.innerHTML = ROOM_ICON[nextRoom];
 
     Object.entries(els.props).forEach(([key, node])=>{
       node.style.display = propsByRoom[room].includes(key) ? 'block' : 'none';
     });
 
     renderDock();
+    renderRail();
+  }
+
+  function renderRail(){
+    els.roomRail.innerHTML = '';
+    rooms.forEach((r, i)=>{
+      const dot = document.createElement('button');
+      dot.className = 'rail-dot' + (i === roomIndex ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to ' + roomLabels[r]);
+      dot.addEventListener('click', ()=>{
+        roomIndex = i;
+        renderRoom();
+      });
+      els.roomRail.appendChild(dot);
+    });
   }
 
 function renderDock(){
