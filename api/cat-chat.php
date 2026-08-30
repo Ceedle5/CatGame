@@ -39,48 +39,29 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 
 // ===============================================================
-// LOAD GEMINI API KEY
-// ===============================================================
-
-// ===============================================================
 // LOAD ENVIRONMENT VARIABLES
 // ===============================================================
-require __DIR__ . '/../vendor/autoload.php';
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
-$dotenv->load();
-
-$apiKey = getenv('GEMINI_API_KEY');
-if (!$apiKey) {
-    http_response_code(500);
-    echo json_encode([
-        'error' => 'DEBUG: GEMINI_API_KEY not found in environment',
-        'env_file_exists' => file_exists(__DIR__ . '/../.env'),
-        'vendor_exists' => file_exists(__DIR__ . '/../vendor/autoload.php')
-    ]);
-    exit;
+// For local development: load from .env file
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require __DIR__ . '/../vendor/autoload.php';
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+    $dotenv->safeLoad();
 }
 
-$apiKey = is_string($apiKey) ? trim($apiKey) : '';
 // ===============================================================
 // LOAD GEMINI API KEY
 // ===============================================================
+
 $apiKey = getenv('GEMINI_API_KEY');
-$apiKey = is_string($apiKey)
-    ? trim($apiKey)
-    : '';
+$apiKey = is_string($apiKey) ? trim($apiKey) : '';
 
 if ($apiKey === '') {
-
     http_response_code(500);
-
     echo json_encode([
         'error' => 'Server is not configured with an API key.',
-        'config_exists' => file_exists(
-            __DIR__ . '/api/cat-chat-config.php'
-        )
+        'hint' => 'Set GEMINI_API_KEY in .env (local) or Vercel environment variables (production)'
     ]);
-
     exit;
 }
 
