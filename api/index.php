@@ -280,7 +280,7 @@
     position:absolute;
     bottom:0;left:50%;
     transform:translateX(-50%);
-    width:300px;height:398px;
+    width:600px;height:698px;
     cursor:pointer;
     z-index:2;
     animation:bob 2.6s ease-in-out infinite;
@@ -393,164 +393,397 @@
   }
 
   /* ---------- Dock (floating glass) ---------- */
-  .dock{
-    position:absolute;
-    bottom:26px;left:50%;
-    transform:translateX(-50%);
-    z-index:25;
-    display:flex;
-    gap:14px;
-    padding:14px 16px;
-    border-radius:26px;
-  }
-  .action-btn{
-    background:linear-gradient(160deg, var(--coral), var(--coral-deep));
-    color:#fff;
-    border:none;
-    padding:12px 22px 13px;
-    border-radius:20px;
-    font-family:'Nunito',sans-serif;
-    font-weight:800;
-    font-size:0.82rem;
-    letter-spacing:0.01em;
-    cursor:pointer;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:6px;
-    box-shadow:0 8px 18px rgba(226,96,63,0.35);
-    transition:transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
-  }
-  .action-btn:hover{filter:brightness(1.05);transform:translateY(-2px);}
-  .action-btn:active{transform:scale(0.95) translateY(0);}
-  .action-btn .icon{
-    width:36px;height:36px;
-    border-radius:50%;
-    background:rgba(255,255,255,0.24);
-    display:flex;align-items:center;justify-content:center;
-  }
-  .action-btn .icon svg{width:19px;height:19px;stroke:#fff;fill:none;}
-  .action-btn .icon svg.filled{fill:#fff;stroke:none;}
+ /* ---------- Floating Action Icons ---------- */
+.dock{
+  position:absolute;
+  right:180px;
+  bottom:34px;
+  z-index:35;
 
-  /* ---------- Chat FAB + drawer ---------- */
-  .chat-fab{
-    position:absolute;
-    bottom:30px;right:26px;
-    z-index:35;
-    width:60px;height:60px;
-    border-radius:50%;
-    border:none;
-    cursor:pointer;
-    background:linear-gradient(160deg, var(--coral-deep), var(--ink));
-    color:#fff;
-    box-shadow:0 12px 26px var(--shadow);
-    display:flex;align-items:center;justify-content:center;
-    transition:transform 0.15s ease;
-  }
-  .chat-fab svg{width:26px;height:26px;stroke:#fff;fill:none;}
-  .chat-fab:hover{transform:scale(1.06);}
-  .chat-fab:active{transform:scale(0.94);}
+  display:flex;
+  align-items:center;
+  gap:10px;
 
-  .drawer-backdrop{
+  padding:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+.action-btn{
+  position:relative;
+
+  width:44px;
+  height:44px;
+  padding:0;
+
+  border:none;
+  border-radius:50%;
+
+  background:rgba(255,248,239,0.82);
+  backdrop-filter:blur(14px) saturate(1.3);
+  -webkit-backdrop-filter:blur(14px) saturate(1.3);
+
+  color:var(--coral-deep);
+
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  box-shadow:
+    0 8px 20px rgba(30,22,46,0.18),
+    0 0 0 1px rgba(255,255,255,0.65) inset;
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.action-btn:hover{
+  transform:translateY(-4px) scale(1.06);
+  background:#fff;
+  color:var(--accent-deep);
+
+  box-shadow:
+    0 12px 24px rgba(30,22,46,0.22),
+    0 0 0 1px rgba(255,255,255,0.9) inset;
+}
+
+.action-btn:active{
+  transform:scale(0.92);
+}
+
+.action-btn .icon{
+  width:auto;
+  height:auto;
+  border-radius:0;
+
+  background:transparent;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.action-btn .icon svg{
+  width:20px;
+  height:20px;
+
+  stroke:currentColor;
+  fill:none;
+
+  transition:transform 0.18s ease;
+}
+
+.action-btn .icon svg.filled{
+  fill:currentColor;
+  stroke:none;
+}
+
+.action-btn:hover .icon svg{
+  transform:scale(1.08);
+}
+
+/* Tooltip */
+.action-btn::after{
+  content:attr(data-label);
+
+  position:absolute;
+  bottom:calc(100% + 9px);
+  left:50%;
+
+  transform:translateX(-50%) translateY(4px);
+
+  padding:5px 9px;
+
+  background:rgba(47,42,61,0.92);
+  color:#fff;
+
+  border-radius:8px;
+
+  font-family:'Nunito',sans-serif;
+  font-size:0.68rem;
+  font-weight:800;
+
+  white-space:nowrap;
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.action-btn:hover::after{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+  /* ---------- Chat FAB + floating chatbot widget ---------- */
+/* ---------- Chat FAB ---------- */
+.chat-fab{
+  position:absolute;
+  bottom:26px;
+  right:26px;
+  z-index:40;
+
+  width:150px;
+  height:200px;
+
+  border:none;
+  padding:0;
+
+  background:transparent;
+  box-shadow:none;
+
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  transition:transform 0.18s ease;
+  filter:drop-shadow(0 10px 18px var(--shadow));
+}
+
+.chat-fab img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+
+  pointer-events:none;
+  -webkit-user-drag:none;
+}
+
+.chat-fab:hover{
+  transform:scale(1.08);
+}
+
+.chat-fab:active{
+  transform:scale(0.93);
+}
+  /* .chat-fab .fab-badge{
+    position:absolute;
+    top:2px;right:2px;
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--sage);
+    border:2px solid var(--paper);
+  } */
+
+  /* invisible click-catcher so clicking outside the widget closes it,
+     without dimming the rest of the site like a modal/sidebar would */
+  .chat-scrim{
     position:fixed;inset:0;
-    background:rgba(20,14,30,0.35);
+    background:transparent;
     opacity:0;pointer-events:none;
-    transition:opacity 0.35s ease;
-    z-index:45;
+    z-index:44;
   }
-  .drawer-backdrop.open{opacity:1;pointer-events:auto;}
+  .chat-scrim.open{pointer-events:auto;}
 
-  .chat-drawer{
-    position:fixed;
-    top:0;right:0;
-    height:100%;
-    width:400px;
-    max-width:92vw;
+  .chat-widget{
+    position:absolute;
+    bottom:104px;right:26px;
+    z-index:45;
+    width:368px;
+    max-width:calc(100vw - 32px);
+    height:min(560px, calc(100dvh - 150px));
     background:var(--paper);
-    box-shadow:-24px 0 50px var(--shadow);
-    transform:translateX(100%);
-    transition:transform 0.4s cubic-bezier(.16,1,.3,1);
-    z-index:50;
+    border-radius:26px;
+    box-shadow:0 26px 60px var(--shadow), 0 0 0 1px rgba(255,255,255,0.5) inset;
     display:flex;
     flex-direction:column;
+    overflow:hidden;
+    transform-origin:bottom right;
+    transform:translateY(14px) scale(0.92);
+    opacity:0;
+    pointer-events:none;
+    transition:transform 0.28s cubic-bezier(.2,1,.3,1), opacity 0.22s ease;
   }
-  .chat-drawer.open{transform:translateX(0);}
+  .chat-widget.open{
+    transform:translateY(0) scale(1);
+    opacity:1;
+    pointer-events:auto;
+  }
 
   .chat-head{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:20px 22px 16px;
-    border-bottom:1px solid #f0e6da;
+    display:flex;align-items:center;gap:12px;
+    padding:16px 18px;
+    background:linear-gradient(160deg, var(--coral), var(--coral-deep));
+    color:#fff;
+    flex:0 0 auto;
+  }
+  .chat-head-avatar{
+    width:68px;height:68px;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;
+  }
+  .chat-head-avatar img{width:100%;height:100%;object-fit:contain;}
+  .chat-head-text{flex:1;min-width:0;}
+  .chat-head-name{
     font-family:'Fredoka',sans-serif;
     font-weight:600;
-    font-size:1.1rem;
-    color:var(--coral-deep);
+    font-size:1.02rem;
+    line-height:1.15;
+  }
+  .chat-head-status{
+    display:flex;align-items:center;gap:6px;
+    font-size:0.74rem;
+    font-weight:700;
+    color:rgba(255,255,255,0.85);
+    margin-top:2px;
+  }
+  .chat-head-status::before{
+    content:"";
+    width:7px;height:7px;
+    border-radius:50%;
+    background:#8fe0a0;
+    box-shadow:0 0 0 2px rgba(255,255,255,0.3);
   }
   .chat-close{
-    border:none;background:#f3ece3;color:var(--ink);
-    width:34px;height:34px;border-radius:50%;
-    cursor:pointer;
+    border:none;background:rgba(255,255,255,0.2);color:#fff;
+    width:32px;height:32px;border-radius:50%;
+    cursor:pointer;flex:0 0 auto;
     display:flex;align-items:center;justify-content:center;
+    transition:background 0.15s ease;
   }
-  .chat-close svg{width:15px;height:15px;stroke:currentColor;}
+  .chat-close:hover{background:rgba(255,255,255,0.32);}
+  .chat-close svg{width:14px;height:14px;stroke:currentColor;}
 
   .chat-log{
     flex:1;
     overflow-y:auto;
-    padding:16px 20px;
+    padding:16px 16px 8px;
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:9px;
+    background:
+      radial-gradient(circle at 18% 8%, rgba(255,189,89,0.10), transparent 40%),
+      var(--paper);
   }
+  .chat-row{display:flex;}
+  .chat-row.from-cat{justify-content:flex-start;}
+  .chat-row.from-user{justify-content:flex-end;}
+  .chat-row.from-system{justify-content:center;}
+
   .msg{
-    max-width:80%;
-    padding:11px 16px;
-    border-radius:18px;
-    font-size:1rem;
+    max-width:78%;
+    padding:10px 15px;
+    border-radius:17px;
+    font-size:0.92rem;
     line-height:1.35;
+    box-shadow:0 3px 10px rgba(30,22,46,0.06);
+    animation:msgPop 0.22s ease;
+  }
+  @keyframes msgPop{
+    0%{opacity:0;transform:translateY(6px) scale(0.97);}
+    100%{opacity:1;transform:translateY(0) scale(1);}
   }
   .msg.cat{
-    background:#f3ece3;
-    align-self:flex-start;
+    background:#fff;
+    border:1px solid #f0e6da;
     border-bottom-left-radius:5px;
   }
   .msg.user{
-    background:var(--coral);
+    background:linear-gradient(160deg, var(--coral), var(--coral-deep));
     color:#fff;
-    align-self:flex-end;
     border-bottom-right-radius:5px;
+    box-shadow:0 4px 12px rgba(226,96,63,0.28);
   }
   .msg.typing{
-    background:#f3ece3;
-    align-self:flex-start;
-    font-style:italic;
-    color:#8a7c78;
+    background:#fff;
+    border:1px solid #f0e6da;
+    border-bottom-left-radius:5px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    padding:13px 16px;
   }
+  .typing-dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--ink-soft);
+    opacity:0.5;
+    animation:typingBounce 1s ease-in-out infinite;
+  }
+  .typing-dot:nth-child(2){animation-delay:0.15s;}
+  .typing-dot:nth-child(3){animation-delay:0.3s;}
+  @keyframes typingBounce{
+    0%,60%,100%{transform:translateY(0);opacity:0.4;}
+    30%{transform:translateY(-4px);opacity:0.9;}
+  }
+  .msg.system{
+    background:rgba(58,50,48,0.06);
+    color:var(--ink-soft);
+    font-weight:700;
+    font-size:0.72rem;
+    letter-spacing:0.01em;
+    padding:6px 14px;
+    border-radius:999px;
+    max-width:90%;
+    text-align:center;
+    box-shadow:none;
+  }
+
+  .chat-quick-row{
+    display:flex;
+    gap:8px;
+    padding:0 16px 12px;
+    overflow-x:auto;
+    flex:0 0 auto;
+  }
+  .chat-quick-btn{
+    flex:0 0 auto;
+    background:#fff;
+    border:1px solid #f0e6da;
+    color:var(--coral-deep);
+    font-family:'Nunito',sans-serif;
+    font-weight:800;
+    font-size:0.76rem;
+    padding:8px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background 0.15s ease, transform 0.1s ease;
+  }
+  .chat-quick-btn:hover{background:#fff3ea;}
+  .chat-quick-btn:active{transform:scale(0.96);}
+
   .chat-input-row{
     display:flex;
-    gap:10px;
-    padding:14px 20px 20px;
+    align-items:center;
+    gap:9px;
+    padding:12px 14px;
     border-top:1px solid #f0e6da;
+    flex:0 0 auto;
   }
   .chat-input-row input{
     flex:1;
     border:2px solid #f0e6da;
     border-radius:26px;
-    padding:12px 18px;
+    padding:11px 17px;
     font-family:'Nunito',sans-serif;
-    font-size:1rem;
+    font-size:0.92rem;
     outline:none;
+    min-width:0;
   }
   .chat-input-row input:focus{border-color:var(--coral);}
   .chat-input-row button{
     background:var(--coral-deep);
     color:#fff;
     border:none;
-    width:50px;height:50px;
+    width:44px;height:44px;
     border-radius:50%;
     cursor:pointer;
+    flex:0 0 auto;
     display:flex;align-items:center;justify-content:center;
+    transition:transform 0.12s ease, filter 0.12s ease;
   }
-  .chat-input-row button svg{width:20px;height:20px;fill:#fff;}
+  .chat-input-row button:hover{filter:brightness(1.08);}
+  .chat-input-row button:active{transform:scale(0.92);}
+  .chat-input-row button svg{width:18px;height:18px;fill:#fff;}
 
   .note{
     position:absolute;
@@ -562,38 +795,123 @@
   }
 
   /* ---------- Responsive ---------- */
-  @media (max-width:720px){
-    .title-pill{font-size:1rem;padding:9px 16px 9px 12px;}
-    .room-pill{display:none;}
-    .stats-pill{gap:12px;padding:9px 16px;}
-    .stat-track{width:44px;}
-    .room-door{width:46px;height:150px;}
-    .room-door.prev{left:10px;}
-    .room-door.next{right:10px;}
-    .door-label{display:none;}
-    .cat-stage{width:250px;height:330px;bottom:96px;}
-    .mood-halo{width:220px;height:220px;}
-    .cat-wrap{width:230px;height:305px;}
-    .cat-shadow{width:150px;height:24px;}
-    .cat-wrap.mood-sleepy{width:300px;height:248px;}
-    .cat-wrap.mood-sleepy .cat-shadow{width:230px;}
-    .dock{gap:8px;padding:10px 12px;bottom:18px;max-width:calc(100vw - 90px);overflow-x:auto;}
-    .action-btn{padding:9px 14px 11px;font-size:0.74rem;}
-    .action-btn .icon{width:30px;height:30px;}
-    .action-btn .icon svg{width:16px;height:16px;}
-    .chat-fab{width:52px;height:52px;bottom:20px;right:16px;}
-    .chat-fab svg{width:22px;height:22px;}
-    .chat-drawer{
-      top:auto;bottom:0;left:0;right:0;
-      width:100%;max-width:100%;
-      height:78%;
-      border-radius:26px 26px 0 0;
-      box-shadow:0 -24px 50px var(--shadow);
-      transform:translateY(100%);
-    }
-    .chat-drawer.open{transform:translateY(0);}
-    .window{top:100px;width:90px;height:72px;}
+ @media (max-width:720px){
+
+  .title-pill{
+    font-size:1rem;
+    padding:9px 16px 9px 12px;
   }
+
+  .room-pill{
+    display:none;
+  }
+
+  .stats-pill{
+    gap:12px;
+    padding:9px 16px;
+  }
+
+  .stat-track{
+    width:44px;
+  }
+
+  .room-door{
+    width:46px;
+    height:150px;
+  }
+
+  .room-door.prev{
+    left:10px;
+  }
+
+  .room-door.next{
+    right:10px;
+  }
+
+  .door-label{
+    display:none;
+  }
+
+  .cat-stage{
+    width:250px;
+    height:330px;
+    bottom:96px;
+  }
+
+  .mood-halo{
+    width:220px;
+    height:220px;
+  }
+
+  .cat-wrap{
+    width:230px;
+    height:305px;
+  }
+
+  .cat-shadow{
+    width:150px;
+    height:24px;
+  }
+
+  .cat-wrap.mood-sleepy{
+    width:300px;
+    height:248px;
+  }
+
+  .cat-wrap.mood-sleepy .cat-shadow{
+    width:230px;
+  }
+
+  /* Floating action icons */
+  .dock{
+    right:82px;
+    bottom:26px;
+
+    gap:7px;
+
+    max-width:none;
+    overflow:visible;
+  }
+
+  .action-btn{
+    width:38px;
+    height:38px;
+  }
+
+  .action-btn .icon svg{
+    width:17px;
+    height:17px;
+  }
+
+  .action-btn::after{
+    display:none;
+  }
+
+  /* Chat bubble */
+  .chat-fab{
+    width:58px;
+    height:58px;
+
+    bottom:18px;
+    right:14px;
+  }
+
+  .chat-widget{
+    right:12px;
+    left:12px;
+    width:auto;
+    max-width:none;
+    bottom:82px;
+    height:min(66dvh, 520px);
+    border-radius:22px;
+  }
+
+  .window{
+    top:100px;
+    width:90px;
+    height:72px;
+  }
+}
 </style>
 </head>
 <body>
@@ -622,15 +940,15 @@
       <div class="mood-halo"></div>
       <div class="cat-wrap mood-neutral" id="catWrap">
         <div class="cat-shadow"></div>
-        <img class="cat-pose-img cat-img" src="Assets/Character.png" alt="Whiskers the cat">
-        <img class="cat-pose-img cat-img-sleep" src="Assets/Sleeping.png" alt="Whiskers sleeping">
-        <img class="cat-pose-img cat-img-hungry" src="Assets/Hungry.png" alt="Whiskers is hungry">
+        <img class="cat-pose-img cat-img" src="/Assets/Character.png" alt="Whiskers the cat">
+        <img class="cat-pose-img cat-img-sleep" src="/Assets/Sleeping.png" alt="Whiskers sleeping">
+        <img class="cat-pose-img cat-img-hungry" src="/Assets/Hungry.png" alt="Whiskers is hungry">
         <img class="cat-pose-img cat-img-eating" src="Assets/Eating.png" alt="Whiskers eating">
-        <img class="cat-pose-img cat-pet-frame" id="petFrame1" src="Assets/Pet.png" alt="Whiskers noticing pets">
-        <img class="cat-pose-img cat-pet-frame" id="petFrame2" src="Assets/pet1.png" alt="Whiskers enjoying pets">
-        <img class="cat-pose-img cat-pet-frame" id="petFrame3" src="Assets/Pet3.png" alt="Whiskers rolling over happily">
-        <img class="cat-pose-img cat-play-frame" id="playFrame1" src="Assets/Playing1.png" alt="Whiskers playing">
-        <img class="cat-pose-img cat-play-frame" id="playFrame2" src="Assets/Playing2.png" alt="Whiskers playing">
+        <img class="cat-pose-img cat-pet-frame" id="petFrame1" src="/Assets/Pet.png" alt="Whiskers noticing pets">
+        <img class="cat-pose-img cat-pet-frame" id="petFrame2" src="/Assets/pet1.png" alt="Whiskers enjoying pets">
+        <img class="cat-pose-img cat-pet-frame" id="petFrame3" src="/Assets/Pet3.png" alt="Whiskers rolling over happily">
+        <img class="cat-pose-img cat-play-frame" id="playFrame1" src="/Assets/Playing1.png" alt="Whiskers playing">
+        <img class="cat-pose-img cat-play-frame" id="playFrame2" src="/Assets/Playing2.png" alt="Whiskers playing">
         <div class="bubble" id="bubble"></div>
       </div>
       <div class="particles" id="particles"></div>
@@ -661,19 +979,32 @@
 
   <div class="dock glass" id="dock"></div>
 
-  <button class="chat-fab" id="chatToggle" aria-label="Talk to Whiskers"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-1 4L21 20l-4.3-1a8.4 8.4 0 0 1-3.7.9 8.5 8.5 0 1 1 8-8.4Z"/></svg></button>
+  <button class="chat-fab" id="chatToggle" aria-label="Talk to Whiskers">
+    <img src="/Assets/ForMessageBubble.png" alt="">
+    <span class="fab-badge" id="fabBadge" style="display:none;"></span>
+  </button>
 
   <div class="note">Stats reset on reload &middot; native replies for now, AI hookup coming later</div>
 
 </div>
 
-<div class="drawer-backdrop" id="drawerBackdrop"></div>
-<div class="chat-drawer" id="chatPanel">
+<div class="chat-scrim" id="chatScrim"></div>
+<div class="chat-widget" id="chatPanel" role="dialog" aria-label="Chat with Whiskers">
   <div class="chat-head">
-    <span>Talk to Whiskers</span>
+    <span class="chat-head-avatar"><img src="/Assets/MessageBubble.png" alt=""></span>
+    <div class="chat-head-text">
+      <div class="chat-head-name">Whiskers</div>
+      <div class="chat-head-status">Online</div>
+    </div>
     <button class="chat-close" id="chatClose" aria-label="Close chat"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   </div>
   <div class="chat-log" id="chatLog"></div>
+  <div class="chat-quick-row" id="chatQuickRow">
+    <button class="chat-quick-btn" data-quick="How are you?">How are you?</button>
+    <button class="chat-quick-btn" data-quick="Are you hungry?">Are you hungry?</button>
+    <button class="chat-quick-btn" data-quick="Wanna play?">Wanna play?</button>
+    <button class="chat-quick-btn" data-quick="I love you!">I love you!</button>
+  </div>
   <div class="chat-input-row">
     <input type="text" id="chatInput" placeholder="Say something to Whiskers&hellip;" maxlength="120">
     <button id="chatSend" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M3 11l17-8-8 17-2-7-7-2Z"/></svg></button>
@@ -712,10 +1043,12 @@
     happyFill: document.getElementById('happyFill'),
     energyFill: document.getElementById('energyFill'),
     chatToggle: document.getElementById('chatToggle'),
+    fabBadge: document.getElementById('fabBadge'),
     chatPanel: document.getElementById('chatPanel'),
     chatClose: document.getElementById('chatClose'),
-    drawerBackdrop: document.getElementById('drawerBackdrop'),
+    chatScrim: document.getElementById('chatScrim'),
     chatLog: document.getElementById('chatLog'),
+    chatQuickRow: document.getElementById('chatQuickRow'),
     chatInput: document.getElementById('chatInput'),
     chatSend: document.getElementById('chatSend'),
     petFrames: [
@@ -785,18 +1118,28 @@
     renderDock();
   }
 
-  function renderDock(){
-    const room = rooms[roomIndex];
-    els.dock.innerHTML = '';
-    actionsByRoom[room].forEach(a=>{
-      const btn = document.createElement('button');
-      btn.className = 'action-btn';
-      btn.innerHTML = `<span class="icon">${a.icon}</span><span>${a.label}</span>`;
-      btn.addEventListener('click', a.run);
-      els.dock.appendChild(btn);
-    });
-  }
+function renderDock(){
+  const room = rooms[roomIndex];
+  els.dock.innerHTML = '';
 
+  actionsByRoom[room].forEach(a=>{
+    const btn = document.createElement('button');
+
+    btn.className = 'action-btn';
+    btn.dataset.label = a.label;
+    btn.setAttribute('aria-label', a.label);
+
+    btn.innerHTML = `
+      <span class="icon">
+        ${a.icon}
+      </span>
+    `;
+
+    btn.addEventListener('click', a.run);
+
+    els.dock.appendChild(btn);
+  });
+}
   function clamp(n){ return Math.max(0, Math.min(100, n)); }
 
   function renderStats(){
@@ -829,7 +1172,7 @@
     renderMood();
   }
 
-  /* ---------------- Bubble ---------------- */
+  /* ---------------- Bubble (over the cat) ---------------- */
   let bubbleTimer = null;
   function say(text){
     els.bubble.textContent = text;
@@ -856,7 +1199,9 @@
     renderAll();
     playEatAnimation();
     spawnParticle('🍗');
-    say(pick(["Nom nom nom!", "Yummy!", "More please? 🐟"]));
+    const line = pick(["Nom nom nom!", "Yummy!", "More please? 🐟"]);
+    say(line);
+    logAction('🍗 You fed Whiskers', line);
   }
 
   function giveTreat(){
@@ -866,7 +1211,9 @@
     renderAll();
     playEatAnimation();
     spawnParticle('🥛');
-    say(pick(["A treat?! Best day ever!", "Purrrr~"]));
+    const line = pick(["A treat?! Best day ever!", "Purrrr~"]);
+    say(line);
+    logAction('🥛 You gave a treat', line);
   }
 
   function playWithCat(){
@@ -878,7 +1225,9 @@
     bounceCat();
     playPlayAnimation();
     spawnParticle('✨');
-    say(pick(["Wheee!", "Again, again!", "This is fun!"]));
+    const line = pick(["Wheee!", "Again, again!", "This is fun!"]);
+    say(line);
+    logAction('✨ You played together', line);
   }
 
   function petCat(){
@@ -886,8 +1235,10 @@
     state.happy = clamp(state.happy + 8);
     renderAll();
     spawnParticle('💕');
-    say(pick(["Purrrrr...", "I love that!", "😻"]));
+    const line = pick(["Purrrrr...", "I love that!", "😻"]);
+    say(line);
     playPetAnimation();
+    logAction('💕 You petted Whiskers', line);
   }
 
   let petAnimTimer = null;
@@ -971,8 +1322,11 @@
       cancelPlayAnimation();
       spawnParticle('💤');
       say("Goodnight...");
+      logAction('💤 Whiskers went to nap', 'Goodnight...');
     } else {
-      say(pick(["I'm awake!", "Good morning!"]));
+      const line = pick(["I'm awake!", "Good morning!"]);
+      say(line);
+      logAction('☀️ Whiskers woke up', line);
     }
     renderMood();
   }
@@ -992,6 +1346,7 @@
       if (state.energy >= 100){
         state.sleeping = false;
         say("I'm fully rested!");
+        logAction('☀️ Whiskers woke up', "I'm fully rested!");
       }
     } else {
       state.hunger = clamp(state.hunger - 2);
@@ -1013,29 +1368,62 @@
 
   els.catWrap.addEventListener('click', petCat);
 
-  /* ---------------- Chat drawer ---------------- */
+  /* ---------------- Chat widget ---------------- */
   function openChat(){
     els.chatPanel.classList.add('open');
-    els.drawerBackdrop.classList.add('open');
+    els.chatScrim.classList.add('open');
+    els.fabBadge.style.display = 'none';
     els.chatInput.focus();
   }
   function closeChat(){
     els.chatPanel.classList.remove('open');
-    els.drawerBackdrop.classList.remove('open');
+    els.chatScrim.classList.remove('open');
   }
   els.chatToggle.addEventListener('click', ()=>{
     els.chatPanel.classList.contains('open') ? closeChat() : openChat();
   });
   els.chatClose.addEventListener('click', closeChat);
-  els.drawerBackdrop.addEventListener('click', closeChat);
+  els.chatScrim.addEventListener('click', closeChat);
+
+  els.chatQuickRow.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.chat-quick-btn');
+    if (!btn) return;
+    els.chatInput.value = btn.dataset.quick;
+    sendChat();
+  });
 
   function addMessage(text, from){
-    const div = document.createElement('div');
-    div.className = 'msg ' + from;
-    div.textContent = text;
-    els.chatLog.appendChild(div);
+    const row = document.createElement('div');
+    row.className = 'chat-row from-' + from;
+    const bubble = document.createElement('div');
+    bubble.className = 'msg ' + from;
+    bubble.textContent = text;
+    row.appendChild(bubble);
+    els.chatLog.appendChild(row);
     els.chatLog.scrollTop = els.chatLog.scrollHeight;
-    return div;
+    return bubble;
+  }
+
+  function addTyping(){
+    const row = document.createElement('div');
+    row.className = 'chat-row from-cat';
+    const bubble = document.createElement('div');
+    bubble.className = 'msg typing';
+    bubble.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+    row.appendChild(bubble);
+    els.chatLog.appendChild(row);
+    els.chatLog.scrollTop = els.chatLog.scrollHeight;
+    return row;
+  }
+
+  // Logs an in-game action (feed/play/pet/nap) into the chat as a small
+  // centered system bubble, followed by Whiskers' reaction as a cat bubble.
+  function logAction(actionText, reactionText){
+    addMessage(actionText, 'system');
+    if (reactionText) addMessage(reactionText, 'cat');
+    if (!els.chatPanel.classList.contains('open')){
+      els.fabBadge.style.display = 'block';
+    }
   }
 
   /*
@@ -1104,13 +1492,12 @@
     state.happy = clamp(state.happy + 3);
     renderStats();
 
-    const typingEl = addMessage(state.name + ' is typing…', 'typing');
-    els.chatLog.scrollTop = els.chatLog.scrollHeight;
+    const typingRow = addTyping();
 
     const reply = await getCatReply(text);
 
     setTimeout(()=>{
-      typingEl.remove();
+      typingRow.remove();
       addMessage(reply, 'cat');
       say(reply);
     }, 500 + Math.random()*400);
