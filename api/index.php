@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Shero's House</title>
+<title>Shiro's House</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -1070,7 +1070,7 @@
   </div>
 
   <div class="topbar">
-    <div class="title-pill glass"><span class="paw"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="7.5" r="2.1"/><circle cx="11.5" cy="5.3" r="2.1"/><circle cx="16.5" cy="7.5" r="2.1"/><circle cx="19.3" cy="12.2" r="1.9"/><path d="M12 20.2c-3.4 0-6-1.8-6-4.4 0-2.3 2.1-4 6-4s6 1.7 6 4c0 2.6-2.6 4.4-6 4.4Z"/></svg></span> Shero's House</div>
+    <div class="title-pill glass"><span class="paw"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="7.5" r="2.1"/><circle cx="11.5" cy="5.3" r="2.1"/><circle cx="16.5" cy="7.5" r="2.1"/><circle cx="19.3" cy="12.2" r="1.9"/><path d="M12 20.2c-3.4 0-6-1.8-6-4.4 0-2.3 2.1-4 6-4s6 1.7 6 4c0 2.6-2.6 4.4-6 4.4Z"/></svg></span> Shiro's House</div>
     <div class="room-pill glass" id="roomName">Living Room</div>
     <div class="stats-pill glass">
       <div class="stat stat-hunger">
@@ -1106,7 +1106,7 @@
   <div class="chat-head">
     <span class="chat-head-avatar"><img src="/Assets/MessageBubble.png" alt=""></span>
     <div class="chat-head-text">
-      <div class="chat-head-name">Shero</div>
+      <div class="chat-head-name">Shiro</div>
       <div class="chat-head-status">Online</div>
     </div>
     <button class="chat-close" id="chatClose" aria-label="Close chat"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
@@ -1137,7 +1137,7 @@
     happy: 80,
     energy: 80,
     sleeping: false,
-    name: 'Shero'
+    name: 'Shiro'
   };
 
   const ROOM_ICON = {
