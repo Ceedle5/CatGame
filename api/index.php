@@ -1098,7 +1098,6 @@
     <span class="fab-badge" id="fabBadge" style="display:none;"></span>
   </button>
 
-  <div class="note">Stats reset on reload &middot; native replies for now, AI hookup coming later</div>
 
 </div>
 
@@ -1107,7 +1106,7 @@
   <div class="chat-head">
     <span class="chat-head-avatar"><img src="/Assets/MessageBubble.png" alt=""></span>
     <div class="chat-head-text">
-      <div class="chat-head-name">Whiskers</div>
+      <div class="chat-head-name">Shero</div>
       <div class="chat-head-status">Online</div>
     </div>
     <button class="chat-close" id="chatClose" aria-label="Close chat"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
@@ -1138,7 +1137,7 @@
     happy: 80,
     energy: 80,
     sleeping: false,
-    name: 'Whiskers'
+    name: 'Shero'
   };
 
   const ROOM_ICON = {
@@ -1314,6 +1313,7 @@ function renderDock(){
 
   /* ---------------- Bubble (over the cat) ---------------- */
   let bubbleTimer = null;
+  let chatHistory = []; // [{role:'user'|'assistant', content:'...'}] — sent to cat-chat.php for context
   function say(text){
     els.bubble.textContent = text;
     els.bubble.classList.add('show');
@@ -1569,59 +1569,46 @@ function renderDock(){
   /*
    * getCatReply(message)
    * -------------------------------------------------------------
-   * NATIVE / PLACEHOLDER LOGIC — swap this out later for a real AI call.
-   * Keep the function name, the "async" signature, and the return value
-   * (a string) the same, so nothing else in the app needs to change.
-   *
-   * Example of what this will look like with an AI backend later:
-   *
-   *   async function getCatReply(message) {
-   *     const res = await fetch('/api/cat-chat', {
-   *       method: 'POST',
-   *       headers: { 'Content-Type': 'application/json' },
-   *       body: JSON.stringify({ message, state })
-   *     });
-   *     const data = await res.json();
-   *     return data.reply;
-   *   }
+   * Calls cat-chat.php, which proxies the message to Claude (see that
+   * file for the backend). Sends along the cat's live stats + room so
+   * replies react to the current game state, plus a short rolling
+   * history for conversational context. Falls back to canned local
+   * lines if the request fails, so chat never goes silent.
    */
   async function getCatReply(message){
-    const m = message.toLowerCase();
-
     if (state.sleeping) return pick(["Zzz... five more minutes...", "*rolls over, still asleep*"]);
 
-    if (/hungry|food|eat|feed/.test(m)){
-      return pick(["I could go for a snack! 🍗", "Kitchen's this way, hint hint.", "Feed me and I'll love you forever."]);
-    }
-    if (/play|toy|game/.test(m)){
-      return pick(["Yes! Let's play!", "Chase me, chase me!", "I'm always up for playtime."]);
-    }
-    if (/sleep|tired|nap/.test(m)){
-      return pick(["A nap does sound nice...", "*yawns*", "Wake me up in the bedroom."]);
-    }
-    if (/love|cute|good (cat|kitty)|cutie/.test(m)){
-      return pick(["Purrrrr, I love you too!", "😻 You're my favorite human.", "Aww, stop it, my fur's turning red."]);
-    }
-    if (/name|who are you/.test(m)){
-      return `I'm ${state.name}! Nice to meet you.`;
-    }
-    if (/how (are|r) (you|u)/.test(m)){
-      const mood = currentMood();
-      if (mood === 'happy') return "I'm doing great, thanks for asking!";
-      if (mood === 'sad') return "Honestly? Could use some food and cuddles.";
-      return "I'm okay! Could always use a treat though.";
-    }
-    if (/hi|hello|hey/.test(m)){
-      return pick(["Meow! Hi there!", "Hey hey! 🐾", "Hello, friend!"]);
-    }
+    const payload = {
+      message,
+      history: chatHistory,
+      state: {
+        name: state.name,
+        room: roomLabels[rooms[roomIndex]],
+        mood: currentMood(),
+        hunger: Math.round(state.hunger),
+        happy: Math.round(state.happy),
+        energy: Math.round(state.energy),
+        sleeping: state.sleeping,
+      }
+    };
 
-    return pick([
-      "Meow?",
-      "Purrrr~",
-      "*tilts head*",
-      "I don't quite get that, but I like your voice!",
-      "Meow meow!"
-    ]);
+    try{
+      const res = await fetch('cat-chat.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok || !data.reply) throw new Error(data.error || 'Bad response');
+      return data.reply;
+    } catch(err){
+      console.error('Cat chat error:', err);
+      return pick([
+        "Meow? (I'm having trouble finding my words right now)",
+        "Purrrr~ *connection hiccup, try again?*",
+        "*tilts head* my brain's a little foggy right now."
+      ]);
+    }
   }
 
   async function sendChat(){
@@ -1635,6 +1622,9 @@ function renderDock(){
     const typingRow = addTyping();
 
     const reply = await getCatReply(text);
+    chatHistory.push({ role: 'user', content: text });
+    chatHistory.push({ role: 'assistant', content: reply });
+    if (chatHistory.length > 10) chatHistory = chatHistory.slice(-10);
 
     setTimeout(()=>{
       typingRow.remove();
