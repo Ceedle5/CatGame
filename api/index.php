@@ -8,7 +8,7 @@
 <!-- Favicon -->
 <!-- Favicon -->
 <link rel="icon" href="/Assets/Pet.png" type="image/png">
-<link rel="apple-touch-icon" href="/Assets/Pet.png">
+<link rel="apple-touch-icon" href="/Assets/MessageBubble.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
