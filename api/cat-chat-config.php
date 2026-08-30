@@ -8,7 +8,7 @@
  *    index.html and cat-chat.php).
  * 2. Replace the placeholder below with your real key from
  *    https://aistudio.google.com/apikey
- * 3. Never commit the real cat-chat-config.php to git, and never
+ * 3. Never commit the real cat-chat-config.php to git, and neve
  *    paste the real key into a chat, issue, or screenshot.
  *
  * Skip this file entirely if your host lets you set the
