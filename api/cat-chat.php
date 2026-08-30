@@ -44,9 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $apiKey = getenv('GEMINI_API_KEY');
 
-if (!$apiKey && file_exists(__DIR__ . '/api/cat-chat-config.php')) {
+if (!$apiKey && file_exists(__DIR__ . '/cat-chat-config.php')) {
 
-    $config = require __DIR__ . '/api/cat-chat-config.php';
+    $config = require __DIR__ . '/cat-chat-config.php';
     if (is_array($config)) {
         $apiKey = $config['api_key'] ?? null;
     }
