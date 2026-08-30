@@ -18,5 +18,5 @@
  */
 
 return [
-    'api_key' => 'AQ.Ab8RN6KDDaD20CWRk4QSRPywA9o_0rHiu1vpCW2LVoTUOB7M5g',
+    'api_key' => 'AQ.Ab8RN6KweNDQD8uKxhp87E5CQNeLZ7fo8my-nAzSXhXlEZt-UQ',
 ];
