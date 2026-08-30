@@ -533,13 +533,16 @@ if ($httpCode >= 400) {
 
         'error' =>
             $data['error']['message']
-            ?? 'Gemini API error'
+            ?? 'Gemini API error',
+
+        'http_code' => $httpCode,
+
+        'raw' => $data
 
     ]);
 
     exit;
 }
-
 
 // ===============================================================
 // EXTRACT MODEL RESPONSE
