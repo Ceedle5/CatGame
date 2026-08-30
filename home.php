@@ -622,15 +622,15 @@
       <div class="mood-halo"></div>
       <div class="cat-wrap mood-neutral" id="catWrap">
         <div class="cat-shadow"></div>
-        <img class="cat-pose-img cat-img" src="Assets/Character.png" alt="Whiskers the cat">
-        <img class="cat-pose-img cat-img-sleep" src="Assets/Sleeping.png" alt="Whiskers sleeping">
-        <img class="cat-pose-img cat-img-hungry" src="Assets/Hungry.png" alt="Whiskers is hungry">
-        <img class="cat-pose-img cat-img-eating" src="Assets/Eating.png" alt="Whiskers eating">
-        <img class="cat-pose-img cat-pet-frame" id="petFrame1" src="Assets/Pet.png" alt="Whiskers noticing pets">
-        <img class="cat-pose-img cat-pet-frame" id="petFrame2" src="Assets/pet1.png" alt="Whiskers enjoying pets">
-        <img class="cat-pose-img cat-pet-frame" id="petFrame3" src="Assets/Pet3.png" alt="Whiskers rolling over happily">
-        <img class="cat-pose-img cat-play-frame" id="playFrame1" src="Assets/Playing1.png" alt="Whiskers playing">
-        <img class="cat-pose-img cat-play-frame" id="playFrame2" src="Assets/Playing2.png" alt="Whiskers playing">
+        <img class="cat-pose-img cat-img" src="/Assets/Character.png" alt="Whiskers the cat">
+        <img class="cat-pose-img cat-img-sleep" src="/Assets/Sleeping.png" alt="Whiskers sleeping">
+        <img class="cat-pose-img cat-img-hungry" src="/Assets/Hungry.png" alt="Whiskers is hungry">
+        <img class="cat-pose-img cat-img-eating" src="/Assets/Eating.png" alt="Whiskers eating">
+        <img class="cat-pose-img cat-pet-frame" id="petFrame1" src="/Assets/Pet.png" alt="Whiskers noticing pets">
+        <img class="cat-pose-img cat-pet-frame" id="petFrame2" src="/Assets/pet1.png" alt="Whiskers enjoying pets">
+        <img class="cat-pose-img cat-pet-frame" id="petFrame3" src="/Assets/Pet3.png" alt="Whiskers rolling over happily">
+        <img class="cat-pose-img cat-play-frame" id="playFrame1" src="/Assets/Playing1.png" alt="Whiskers playing">
+        <img class="cat-pose-img cat-play-frame" id="playFrame2" src="/Assets/Playing2.png" alt="Whiskers playing">
         <div class="bubble" id="bubble"></div>
       </div>
       <div class="particles" id="particles"></div>
