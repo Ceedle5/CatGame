@@ -42,16 +42,30 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // LOAD GEMINI API KEY
 // ===============================================================
 
+// ===============================================================
+// LOAD ENVIRONMENT VARIABLES
+// ===============================================================
+require __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
 $apiKey = getenv('GEMINI_API_KEY');
-
-if (!$apiKey && file_exists(__DIR__ . '/cat-chat-config.php')) {
-
-    $config = require __DIR__ . '/cat-chat-config.php';
-    if (is_array($config)) {
-        $apiKey = $config['api_key'] ?? null;
-    }
+if (!$apiKey) {
+    http_response_code(500);
+    echo json_encode([
+        'error' => 'DEBUG: GEMINI_API_KEY not found in environment',
+        'env_file_exists' => file_exists(__DIR__ . '/../.env'),
+        'vendor_exists' => file_exists(__DIR__ . '/../vendor/autoload.php')
+    ]);
+    exit;
 }
 
+$apiKey = is_string($apiKey) ? trim($apiKey) : '';
+// ===============================================================
+// LOAD GEMINI API KEY
+// ===============================================================
+$apiKey = getenv('GEMINI_API_KEY');
 $apiKey = is_string($apiKey)
     ? trim($apiKey)
     : '';
